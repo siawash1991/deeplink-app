@@ -1,0 +1,138 @@
+###
+# Deep Link Shortener API Examples
+# Use this file with REST Client extension in VS Code
+###
+
+### Variables
+@baseUrl = http://localhost:3000
+@shortCode = abc123
+
+###
+# Health Check
+GET {{baseUrl}}/health
+Accept: application/json
+
+###
+# Create Short Link - YouTube
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+}
+
+###
+# Create Short Link - Instagram
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://instagram.com/p/ABC123"
+}
+
+###
+# Create Short Link - YouTube Short URL
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://youtu.be/dQw4w9WgXcQ"
+}
+
+###
+# Create Short Link - Instagram Reel
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://instagram.com/reel/XYZ789"
+}
+
+###
+# Get Link Statistics
+GET {{baseUrl}}/api/stats/{{shortCode}}
+Accept: application/json
+
+###
+# List All Links - Default Pagination
+GET {{baseUrl}}/api/links
+Accept: application/json
+
+###
+# List All Links - Custom Pagination
+GET {{baseUrl}}/api/links?page=1&limit=5
+Accept: application/json
+
+###
+# List All Links - Page 2
+GET {{baseUrl}}/api/links?page=2&limit=10
+Accept: application/json
+
+###
+# Delete Link
+DELETE {{baseUrl}}/api/links/{{shortCode}}
+Accept: application/json
+
+###
+# Access Short Link (Redirect)
+GET {{baseUrl}}/{{shortCode}}
+
+###
+# Error Case - Missing URL
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+}
+
+###
+# Error Case - Unsupported Platform
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://example.com/some-page"
+}
+
+###
+# Error Case - Non-existent Short Code (Stats)
+GET {{baseUrl}}/api/stats/nonexistent
+Accept: application/json
+
+###
+# Error Case - Non-existent Short Code (Delete)
+DELETE {{baseUrl}}/api/links/nonexistent
+Accept: application/json
+
+###
+# Example Workflow - Complete Flow
+###
+
+# Step 1: Create a short link
+POST {{baseUrl}}/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://youtube.com/watch?v=test123"
+}
+
+###
+# Step 2: Get statistics (use shortCode from previous response)
+GET {{baseUrl}}/api/stats/test123
+Accept: application/json
+
+###
+# Step 3: Access the link (opens in browser)
+GET {{baseUrl}}/test123
+
+###
+# Step 4: Check statistics again (should show increased clicks)
+GET {{baseUrl}}/api/stats/test123
+Accept: application/json
+
+###
+# Step 5: Delete the link
+DELETE {{baseUrl}}/api/links/test123
+Accept: application/json
+
+###
